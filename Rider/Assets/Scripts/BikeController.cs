@@ -6,7 +6,8 @@ public class BikeController : MonoBehaviour
     public float speed = 20f;
     public float rotationSpeed = 4f;
 
-    bool move = false;
+    bool moveForward = false;
+    bool moveBackward = false;
     bool isGrounded = false;
 
     // Update is called once per frame
@@ -14,18 +15,26 @@ public class BikeController : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            move = true;
+            moveForward = true;
+        }
+        if (Input.GetButtonDown("Fire2"))
+        {
+            moveBackward = true;
         }
 
         if (Input.GetButtonUp("Fire1"))
         {
-            move = false;
+            moveForward = false;
+        }
+        if (Input.GetButtonUp("Fire2"))
+        {
+            moveBackward = false;
         }
     }
 
     private void FixedUpdate()
     {
-        if (move == true)
+        if (moveForward == true)
         {
             if (isGrounded)
             {
@@ -34,6 +43,18 @@ public class BikeController : MonoBehaviour
             else
             {
                 rb.AddTorque(rotationSpeed * Time.fixedDeltaTime * 100f, ForceMode2D.Force);
+            }
+        }
+
+        if (moveBackward == true)
+        {
+            if (isGrounded)
+            {
+                rb.AddForce(transform.right * -speed * Time.fixedDeltaTime * 100f, ForceMode2D.Force);
+            }
+            else
+            {
+                rb.AddTorque(-rotationSpeed * Time.fixedDeltaTime * 100f, ForceMode2D.Force);
             }
         }
     }
